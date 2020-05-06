@@ -109,6 +109,9 @@ namespace MailBounceDetector
         private static BounceStatus ParseBounceStatus(string statusCode, IDictionary<int, string> statusCodes)
         {
             var value = int.Parse(statusCode);
+            if (!statusCodes.ContainsKey(value))
+                return new BounceStatus(value, value.ToString());
+
             return new BounceStatus(value, statusCodes[value]);
         }
 
@@ -190,8 +193,8 @@ namespace MailBounceDetector
         }
 
         public bool IsBounce => DeliveryStatus != null;
-        public bool IsHard => IsBounce && PrimaryStatus != null && PrimaryStatus.Code > 4;
-        public bool IsSoft => IsBounce && PrimaryStatus != null && PrimaryStatus.Code <= 4;
+        public bool IsHard => IsBounce && PrimaryStatus?.Code > 4;
+        public bool IsSoft => IsBounce && PrimaryStatus?.Code <= 4;
         public BounceStatus PrimaryStatus { get; }
         public BounceStatus SecundaryStatus { get; }
         public BounceStatus CombinedStatus { get; }

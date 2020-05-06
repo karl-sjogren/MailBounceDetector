@@ -21,9 +21,7 @@ namespace MailBounceDetector
             //
             // detect on a text part.
 
-            var textPart = message.Body as TextPart;
-
-            if (textPart != null)
+            if (message.Body is TextPart textPart)
             {
                 var result = DetectQmailBounce(message, textPart);
 
